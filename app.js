@@ -5,9 +5,9 @@ var mysql = require("mysql");
 //Database connection
 var connection = mysql.createConnection({
     host     : process.env.TWITCH_STATS_BACKEND_DB_HOST,
-    user     : TWITCH_STATS_BACKEND_DB_USER,
-    password : TWITCH_STATS_BACKEND_DB_PASSWORD,
-    database : TWITCH_STATS_BACKEND_DB,
+    user     : process.env.TWITCH_STATS_BACKEND_DB_USER,
+    password : process.env.TWITCH_STATS_BACKEND_DB_PASSWORD,
+    database : process.env.TWITCH_STATS_BACKEND_DB,
     port: '3306'
   });
 
