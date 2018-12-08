@@ -3,13 +3,14 @@ var app = express();
 
 var mysql = require("mysql");
 //Database connection
-var connection = mysql.createConnection({
+var db_configuration = {
     host     : process.env.TWITCH_STATS_BACKEND_DB_HOST,
     user     : process.env.TWITCH_STATS_BACKEND_DB_USER,
     password : process.env.TWITCH_STATS_BACKEND_DB_PASSWORD,
     database : process.env.TWITCH_STATS_BACKEND_DB,
-    port: '3306'
-  });
+    port: process.env.TWITCH_STATS_BACKEND_DB_PORT 
+}
+var connection = mysql.createConnection(db_configuration);
 
 connection.connect(function(err) {
     if (err) throw err
@@ -21,6 +22,9 @@ app.get("/games", (req, res, next) => {
     if (error) throw error;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
+    for(index=0; index < results.length;++index){
+      results[index]['graphs'] = JSON.parse(results[index]['graphs']);
+    }
     res.send(JSON.stringify(results))
 
   });
