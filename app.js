@@ -18,7 +18,7 @@ connection.connect(function(err) {
 })
 
 app.get("/games", (req, res, next) => {
-  connection.query('SELECT * FROM games g INNER JOIN games_cache c ON g.game_id = c.game_id', function(error,results,fields) {
+  connection.query('SELECT * FROM games g INNER JOIN games_cache c ON g.game_id = c.game_id WHERE streams_count > 0 ORDER BY viewer_count DESC', function(error,results,fields) {
     if (error) throw error;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
