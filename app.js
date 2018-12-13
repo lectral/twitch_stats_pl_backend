@@ -40,7 +40,7 @@ app.get("/stats", (req, res, next) => {
 app.get("/games/:gameId", (req, res, next) => {
   gameId = req.params.gameId
   query = 
-    connection.query('SELECT DISTINCT user_id, user_name, sum(viewer_count) FROM stream WHERE created_on >= NOW() - INTERVAL 1 MONTH AND game_id = ? GROUP BY user_id, user_name ORDER BY sum(viewer_count) DESC;',gameId, function(error,results,fields) {
+    connection.query('SELECT DISTINCT user_id, user_name, sum(viewer_count) as total_viewer_count FROM stream WHERE created_on >= NOW() - INTERVAL 1 MONTH AND game_id = ? GROUP BY user_id, user_name ORDER BY total_viewer_count DESC;',gameId, function(error,results,fields) {
     if (error) throw error;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
