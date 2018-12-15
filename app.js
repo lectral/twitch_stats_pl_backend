@@ -36,6 +36,17 @@ app.get("/stats", (req, res, next) => {
   });
 });
 
+app.get("/games", (req, res, next) => {
+  gameId = req.params.gameId
+  query = 
+    connection.query('SELECT * FROM games_cache ORDER BY title ASC', function(error, results, fields) {
+    if (error) throw error;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.send(JSON.stringify(results))
+    });
+  });
+
 
 app.get("/games/:gameId", (req, res, next) => {
   gameId = req.params.gameId
