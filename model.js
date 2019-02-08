@@ -7,16 +7,20 @@ var db_configuration = {
   password : process.env.TWITCH_STATS_BACKEND_DB_PASSWORD,
   database : process.env.TWITCH_STATS_BACKEND_DB,
   port: process.env.TWITCH_STATS_BACKEND_DB_PORT, 
-  debug: ['ComQueryPacket', 'RowDataPocket' ]
+  debug: []
 }
 
-var connection = mysql.createConnection(db_configuration);
+var connection = null
 
 /** 
  * Opens connection to the database
  * @throws mysql exceptions 
-*/
-export function openConnection() {
+ */
+export function openConnection(debug) {
+  if(debug){
+    db_configuration.debug = ['ComQueryPacket', 'RowDataPocket']
+  }
+  connection = mysql.createConnection(db_configuration);
   connection.connect(function(err) {
     if (err) throw err
   })
@@ -24,7 +28,7 @@ export function openConnection() {
 
 /** 
  * Closes the connection 
-*/
+ */
 export function closeConnection() {
   connection.end()
 }
@@ -36,7 +40,7 @@ export function closeConnection() {
  * @param {Object} mysql error object
  * @param {callback} function that handles mysql error
  * @return {Boolean} true if there where no errors
-*/
+ */
 function noDbErrors(error, failure){
   if (error) {
     console.log(error)
@@ -51,7 +55,7 @@ function noDbErrors(error, failure){
  *
  * @param {Array} array of json graph data 
  * @return {Array} array of graph data 
-*/
+ */
 
 function parseGraphs(graph_data) {
   for(var index=0; index < graph_data.length;++index){
@@ -72,6 +76,7 @@ export let stats = () => new Promise((resolve, reject) => {
   ORDER BY viewer_count DESC`, 
     function(error,results,fields) {
       if(noDbErrors(error, reject)){
+        results = parseGraphs(results)
         resolve(results);
       }
     })

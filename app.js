@@ -3,7 +3,7 @@ import * as model from './model.js';
 
 const app = express()
 
-model.openConnection()
+model.openConnection(true)
 
 app.use((req, res, next) => {
   var date = new Date( Date.now() );
