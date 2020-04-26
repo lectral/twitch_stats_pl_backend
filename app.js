@@ -52,11 +52,6 @@ app.get("/streamers/:streamerId", (req, res, next) => {
     .catch( error => response_500(res) )
 });
 
-https.createServer({
-  key: fs.readFileSync('./key.pem'),
-  cert: fs.readFileSync('./cert.pem'),
-  passphrase: 'YOUR PASSPHRASE HERE'
-}, app)
-  .listen(4000, () => {
+app.listen(4000, () => {
   console.log("Server running on port 4000");
 });
