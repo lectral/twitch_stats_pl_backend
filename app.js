@@ -1,5 +1,6 @@
 import express from 'express';
 import * as model from './model.js';
+import cors from 'cors';
 
 const app = express()
 app.use(cors())
