@@ -2,7 +2,7 @@ import express from 'express';
 import * as model from './model.js';
 
 const app = express()
-
+app.use(cors())
 model.openConnection(true)
 
 app.use((req, res, next) => {
@@ -51,7 +51,11 @@ app.get("/streamers/:streamerId", (req, res, next) => {
     .catch( error => response_500(res) )
 });
 
-
-app.listen(4000, () => {
+https.createServer({
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem'),
+  passphrase: 'YOUR PASSPHRASE HERE'
+}, app)
+  .listen(4000, () => {
   console.log("Server running on port 4000");
 });
